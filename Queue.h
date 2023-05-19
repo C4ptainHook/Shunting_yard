@@ -19,6 +19,7 @@ class queue{
 public:
     queue();
     void push(T);
+    void pop();
 };
 
 template<class T>
@@ -40,7 +41,20 @@ void queue<T>::push(T _data) {
     size++;
 }
 
+template<class T>
+void queue<T>::pop() {
+    if(!entrance) {
+        throw std::range_error("ERROR\nAttept to pop from empty queue!");
+    }
+    else{
+        Node* temp = entrance;
+        entrance = temp->next;
+        temp->next = nullptr;
+        delete temp;
+        size--;
+    }
 
+}
 
 
 
