@@ -3,6 +3,7 @@
 #pragma once
 #include <iostream>
 #include <stdexcept>
+#include <fstream>
 
 template<class T>
 class stack {
