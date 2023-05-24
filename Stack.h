@@ -1,5 +1,3 @@
-#ifndef SHUNTING_YARD_STACK_H
-#define SHUNTING_YARD_STACK_H
 #pragma once
 #include <iostream>
 #include <stdexcept>
@@ -9,20 +7,36 @@ class stack {
     struct Node {
         T data;
         Node* next;
-        Node(Node* _next, T _data ): next(_next), data(_data) {}
+        explicit Node(T _data): data(_data) {}
         ~Node() {
             delete next;}
     };
     Node* top;
     unsigned int size;
+    class iterator{
+        Node* curr_ptr;
+    public:
+        iterator()=default;
+        iterator(*Node);
+        iterator& operator++();
+        const iterator operator++(int);
+        T operator*();
+        T* operator->();
+        bool operator==(const iterator&);
+        bool operator!=(const iterator&);
+
+        friend class stack<T>;
+    };
 public:
     stack();
     void push(T);
     void pop();
     void clear();
     bool empty();
+    stack<T>::iterator begin();
+    stack<T>::iterator end();
 };
-
+//----------------------------------------------------------------Methods of stack
 template<class T>
 stack<T>::stack() {
     top = nullptr;
@@ -36,7 +50,8 @@ void stack<T>::push(T _data) {
         top=temp;
     }
     else{
-    Node* temp = new Node(top, _data);
+    Node* temp = new Node(_data);
+    temp->next=top;
     top=temp;
     }
     size++;
@@ -68,5 +83,46 @@ bool stack<T>::empty() {
     return false;
 }
 
+template<class T>
+typename stack<T>::iterator stack<T>::begin() {
+    return iterator(this->top);
+}
 
-#endif //SHUNTING_YARD_STACK_H
+template<class T>
+typename stack<T>::iterator stack<T>::end() {
+    return iterator(nullptr);
+}
+//--------------------------------------------------------------------------Methods of iterator
+
+template<class T>
+typename stack<T>::iterator& stack<T>::iterator::operator++() {
+    this->curr_ptr=curr_ptr->next;
+    return *this;
+}
+
+template<class T>
+const typename stack<T>::iterator stack<T>::iterator::operator++(int) {
+    stack<T>::iterator temp(curr_ptr);
+    ++(*this);
+    return temp;
+}
+
+template<class T>
+T stack<T>::iterator::operator*() {
+    return curr_ptr->data;
+}
+
+template<class T>
+T* stack<T>::iterator::operator->() {
+    return &(curr_ptr->data);
+}
+
+template<class T>
+bool stack<T>::iterator::operator==(const stack<T>::iterator& other) {
+   return this->curr_ptr==other.curr_ptr;
+}
+
+template<class T>
+bool stack<T>::iterator::operator!=(const stack<T>::iterator& other) {
+    return this->curr_ptr!=other.curr_ptr;
+}
