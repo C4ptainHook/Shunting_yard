@@ -1,18 +1,19 @@
 #pragma once
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
 template<class T>
 class queue{
     struct Node {
         T data;
-        Node* next;
-        Node(Node* _next, T _data ): next(_next), data(_data) {}
+        std::auto_ptr<Node*> next;
+        Node(T _data ): data(_data) {}
         ~Node() {
             delete next;}
     };
-    Node* entrance;
-    Node* exit;
+    std::unique_ptr<Node*> entrance;
+    std::unique_ptr<Node*>  exit;
     unsigned int size;
 public:
     class iterator{
@@ -46,7 +47,7 @@ queue<T>::queue() {
 
 template<class T>
 void queue<T>::push(T _data) {
-    Node* temp = new Node(nullptr, _data);
+    Node* temp = new Node(_data);
     if(!entrance)
         entrance=exit=temp;
     else{

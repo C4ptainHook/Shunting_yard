@@ -13,6 +13,7 @@ class stack {
     };
     Node* top;
     unsigned int size;
+public:
     class iterator{
         Node* curr_ptr;
     public:
@@ -27,7 +28,6 @@ class stack {
 
         friend class stack<T>;
     };
-public:
     stack();
     void push(T);
     void pop();
@@ -46,7 +46,7 @@ stack<T>::stack() {
 template<class T>
 void stack<T>::push(T _data) {
     if(top==nullptr) {
-        Node* temp = new Node(nullptr, _data);
+        Node* temp = new Node(_data);
         top=temp;
     }
     else{
