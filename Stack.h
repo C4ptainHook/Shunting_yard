@@ -1,17 +1,18 @@
 #pragma once
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
 template<class T>
 class stack {
     struct Node {
         T data;
-        Node* next;
+        std::shared_ptr<Node> next;
         explicit Node(T _data): data(_data) {}
         ~Node() {
-            delete next;}
+            next.reset();}
     };
-    Node* top;
+    std::shared_ptr<Node> top;
     unsigned int size;
 public:
     class iterator{
@@ -46,11 +47,11 @@ stack<T>::stack() {
 template<class T>
 void stack<T>::push(T _data) {
     if(top==nullptr) {
-        Node* temp = new Node(_data);
+        std::shared_ptr<Node> temp(new Node(_data));
         top=temp;
     }
     else{
-    Node* temp = new Node(_data);
+    std::shared_ptr<Node> temp = new Node(_data);
     temp->next=top;
     top=temp;
     }
@@ -61,10 +62,10 @@ template<class T>
 void stack<T>::pop() {
     if(top==nullptr)
         throw std::range_error("Attempt to pop from empty stack!");
-    Node* temp = top;
+    std::shared_ptr<Node> temp = top;
     top=temp->next;
     temp->next=nullptr;
-    delete temp;
+    temp.reset();
     size--;
 }
 

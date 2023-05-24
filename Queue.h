@@ -7,20 +7,20 @@ template<class T>
 class queue{
     struct Node {
         T data;
-        std::auto_ptr<Node*> next;
+        std::shared_ptr<Node> next;
         Node(T _data ): data(_data) {}
         ~Node() {
-            delete next;}
+            next.reset();}
     };
-    std::unique_ptr<Node*> entrance;
-    std::unique_ptr<Node*>  exit;
+    std::shared_ptr<Node> entrance;
+    std::shared_ptr<Node>  exit;
     unsigned int size;
 public:
     class iterator{
         Node* curr_ptr;
     public:
         iterator()=default;
-        iterator(*Node);
+        iterator(Node*);
         iterator& operator++();
         const iterator operator++(int);
         T operator*();
@@ -47,7 +47,7 @@ queue<T>::queue() {
 
 template<class T>
 void queue<T>::push(T _data) {
-    Node* temp = new Node(_data);
+    std::shared_ptr<Node> temp(new Node(_data));
     if(!entrance)
         entrance=exit=temp;
     else{
@@ -63,10 +63,10 @@ void queue<T>::pop() {
         throw std::range_error("ERROR\nAttept to pop from empty queue!");
     }
     else{
-        Node* temp = entrance;
+        std::shared_ptr<Node>  temp = entrance;
         entrance = temp->next;
         temp->next = nullptr;
-        delete temp;
+        temp.reset();
         size--;
     }
 }
