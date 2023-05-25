@@ -8,7 +8,7 @@ class queue{
     struct Node {
         T data;
         std::shared_ptr<Node> next;
-        Node(T _data ): data(_data) {}
+       explicit Node(T _data ): data(_data) {}
         ~Node() {
             next.reset();}
     };
@@ -20,7 +20,7 @@ public:
         Node* curr_ptr;
     public:
         iterator()=default;
-        iterator(Node*);
+        explicit iterator(Node* ptr): curr_ptr(ptr) {}
         iterator& operator++();
         const iterator operator++(int);
         T operator*();
@@ -30,13 +30,19 @@ public:
 
         friend class queue<T>;
     };
+
 public:
     queue();
+    queue(queue<T>&&) noexcept;
     void push(T);
     void pop();
+    void clear();
+    const T& back() const;
+    bool empty() const;
     queue<T>::iterator begin();
     queue<T>::iterator end();
     queue<T>& operator=(queue<T>&&) noexcept;
+    queue<T>& operator=(queue<T>const &other);
 };
 //----------------------------------------------------------------Methods of queue
 template<class T>
@@ -45,6 +51,19 @@ queue<T>::queue() {
     exit = nullptr;
     size = 0;
 }
+
+template<class T>
+queue<T>::queue(queue<T>&& other) noexcept{
+    if (this->entrance)
+        clear();
+    this->entrance = other.entrance;
+    this->exit = other.exit;
+    this->size = other.size;
+    other.entrance = nullptr;
+    other.exit = nullptr;
+    other.size = 0;
+}
+
 
 template<class T>
 void queue<T>::push(T _data) {
@@ -73,12 +92,27 @@ void queue<T>::pop() {
 }
 template<class T>
 queue<T>& queue<T>::operator=(queue<T>&& other) noexcept{
-this->entrance = other.entrance;
-this->exit = other.exit;
-this->size=other.size;
-other.entrance = nullptr;
-other.exit = nullptr;
-other.size=0;
+    if (this->entrance)
+        clear();
+    this->entrance = other.entrance;
+    this->exit = other.exit;
+    this->size = other.size;
+    other.entrance = nullptr;
+    other.exit = nullptr;
+    other.size = 0;
+return *this;
+}
+
+template<class T>
+queue<T>& queue<T>::operator=(queue<T>const& other) {
+entrance = nullptr;
+exit = nullptr;
+size = 0;
+queue<T>::iterator it;
+    for (it = other.begin(); it != other.end(); it++) {
+        this->push(*it.curr_ptr->data);
+    }
+    return *this;
 }
 
 template<class T>
@@ -91,6 +125,21 @@ typename queue<T>::iterator queue<T>::end() {
     return iterator(exit);
 }
 
+template<class T>
+const T& queue<T>::back() const {
+    return exit->data;
+}
+
+template<class T>
+bool queue<T>::empty() const {
+    return !size;
+}
+
+template<class T>
+void queue<T>::clear() {
+    while(!this->empty())
+        this->pop();
+}
 //--------------------------------------------------------------------------Methods of iterator
 
 template<class T>
