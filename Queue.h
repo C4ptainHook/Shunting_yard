@@ -36,6 +36,7 @@ public:
     void pop();
     queue<T>::iterator begin();
     queue<T>::iterator end();
+    queue<T>& operator=(queue<T>&&) noexcept;
 };
 //----------------------------------------------------------------Methods of queue
 template<class T>
@@ -63,12 +64,21 @@ void queue<T>::pop() {
         throw std::range_error("ERROR\nAttept to pop from empty queue!");
     }
     else{
-        std::shared_ptr<Node>  temp = entrance;
+        std::shared_ptr<Node> temp = entrance;
         entrance = temp->next;
         temp->next = nullptr;
         temp.reset();
         size--;
     }
+}
+template<class T>
+queue<T>& queue<T>::operator=(queue<T>&& other) noexcept{
+this->entrance = other.entrance;
+this->exit = other.exit;
+this->size=other.size;
+other.entrance = nullptr;
+other.exit = nullptr;
+other.size=0;
 }
 
 template<class T>
