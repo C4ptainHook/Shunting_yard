@@ -117,12 +117,12 @@ queue<T>::iterator it;
 
 template<class T>
 typename queue<T>::iterator queue<T>::begin() {
-    return iterator(entrance);
+    return iterator(entrance.get());
 }
 
 template<class T>
 typename queue<T>::iterator queue<T>::end() {
-    return iterator(exit);
+    return iterator(exit.get());
 }
 
 template<class T>

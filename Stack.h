@@ -19,7 +19,7 @@ public:
         Node* curr_ptr;
     public:
         iterator()=default;
-        iterator(*Node);
+        explicit iterator(Node* ptr): curr_ptr(ptr) {}
         iterator& operator++();
         const iterator operator++(int);
         T operator*();
@@ -86,7 +86,7 @@ bool stack<T>::empty() {
 
 template<class T>
 typename stack<T>::iterator stack<T>::begin() {
-    return iterator(this->top);
+    return iterator(this->top.get());
 }
 
 template<class T>
