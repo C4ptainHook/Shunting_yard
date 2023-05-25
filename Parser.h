@@ -1,8 +1,8 @@
+#pragma once
 #include <iostream>
 #include "Queue.h"
 
 namespace Parser {
-
 
     class Token {
     public:
@@ -28,12 +28,6 @@ namespace Parser {
         const bool is_rightAssociative;
         const bool unary;
     };
-
-
-    std::ostream &operator<<(std::ostream &os, const Token &token) {
-        os << token.str;
-        return os;
-    }
 
     queue<Token> Parse(const char*);
 }
