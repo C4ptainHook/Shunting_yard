@@ -8,7 +8,7 @@ class queue{
     struct Node {
         T data;
         std::shared_ptr<Node> next;
-        Node(T _data ): data(_data) {}
+       explicit Node(T _data ): data(_data) {}
         ~Node() {
             next.reset();}
     };
@@ -20,7 +20,7 @@ public:
         Node* curr_ptr;
     public:
         iterator()=default;
-        iterator(Node*);
+        explicit iterator(Node* ptr): curr_ptr(ptr) {}
         iterator& operator++();
         const iterator operator++(int);
         T operator*();
