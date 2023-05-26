@@ -50,12 +50,11 @@ queue<Parser::Token> Parser::Parse(const char* exp) {
                         type = Token::Token_Type::Operator;
                         precedence = 2;
                     }
-                    const std::string Operator = std::string(1,op);
-                    Token t(type, Operator, precedence, is_rightAssociative, unary);
-                    tokenized_q.push(t);
                 }
             }
-
+            const std::string Operator = std::string(1,op);
+            Token t(type, Operator, precedence, is_rightAssociative, unary);
+            tokenized_q.push(t);
         }
     }
     return tokenized_q;
