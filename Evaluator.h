@@ -10,7 +10,6 @@ namespace Evaluator {
             switch (postfix_q.front().type) {
                 case Parser::Token::Token_Type::Number: {
                     temp_stack.push(std::stoi(postfix_q.front().str));
-                    postfix_q.pop();
                     break;
                 }
                 case Parser::Token::Token_Type::Operator: {
@@ -64,6 +63,7 @@ namespace Evaluator {
                 }
                 default: break;
             }
+            postfix_q.pop();
         }
         return temp_stack.peek();
     }

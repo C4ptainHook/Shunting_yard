@@ -34,7 +34,7 @@ public:
     void pop();
     void clear();
     bool empty();
-    T& peek();
+    const T& peek();
     stack<T>::iterator begin();
     stack<T>::iterator end();
 };
@@ -45,7 +45,7 @@ stack<T>::stack() {
     size = 0;
 }
 template<class T>
-T& stack<T>::peek() {
+const T& stack<T>::peek() {
     if (top == nullptr) {
         throw std::range_error("Attempt to peek empty stack!");
     }

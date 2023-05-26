@@ -7,11 +7,13 @@ namespace Algorithm {
         queue<Parser::Token> output;
         stack<Parser::Token> operator_stack;
         queue<Parser::Token>::iterator it;
-            for(it = parsed_q.begin(); it!=parsed_q.end(); ++it ) {
+            for(it = parsed_q.begin(); it!=parsed_q.end(); ++it) {
                switch((*it).type){
+
                    case Parser::Token::Token_Type::Number: {
                        output.push(*it);
                        break;}
+
                    case Parser::Token::Token_Type::Operator: {
                        while(!operator_stack.empty()
                        &&operator_stack.peek().precedence <= (*it).precedence )
@@ -22,8 +24,10 @@ namespace Algorithm {
                        operator_stack.push(*it);
                        break;
                    }
+
                    case Parser::Token::Token_Type::LeftParen: {
                        operator_stack.push(*it); break;}
+
                    case Parser::Token::Token_Type::RightParen: {
                        while(!operator_stack.empty()
                              &&operator_stack.peek().type != Parser::Token::Token_Type::LeftParen)
