@@ -34,6 +34,7 @@ public:
     void pop();
     void clear();
     bool empty();
+    T peek();
     stack<T>::iterator begin();
     stack<T>::iterator end();
 };
@@ -43,6 +44,10 @@ stack<T>::stack() {
     top = nullptr;
     size = 0;
 }
+template<class T>
+T stack<T>::peek() {
+    return top->data;
+}
 
 template<class T>
 void stack<T>::push(T _data) {
@@ -51,7 +56,7 @@ void stack<T>::push(T _data) {
         top=temp;
     }
     else{
-    std::shared_ptr<Node> temp = new Node(_data);
+    std::shared_ptr<Node> temp(new Node(_data));
     temp->next=top;
     top=temp;
     }
@@ -97,7 +102,7 @@ typename stack<T>::iterator stack<T>::end() {
 
 template<class T>
 typename stack<T>::iterator& stack<T>::iterator::operator++() {
-    this->curr_ptr=curr_ptr->next;
+    this->curr_ptr=curr_ptr->next.get();
     return *this;
 }
 
