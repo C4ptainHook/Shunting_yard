@@ -144,7 +144,7 @@ void queue<T>::clear() {
 
 template<class T>
 typename queue<T>::iterator& queue<T>::iterator::operator++() {
-    this->curr_ptr=curr_ptr->next;
+    this->curr_ptr=curr_ptr->next.get();
     return *this;
 }
 
