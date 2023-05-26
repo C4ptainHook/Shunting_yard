@@ -38,6 +38,7 @@ public:
     void pop();
     void clear();
     const T& back() const;
+    const T& front() const;
     bool empty() const;
     queue<T>::iterator begin();
     queue<T>::iterator end();
@@ -128,6 +129,11 @@ typename queue<T>::iterator queue<T>::end() {
 template<class T>
 const T& queue<T>::back() const {
     return exit->data;
+}
+
+template<class T>
+const T& queue<T>::front() const {
+    return entrance->data;
 }
 
 template<class T>
