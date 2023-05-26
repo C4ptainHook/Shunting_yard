@@ -18,8 +18,11 @@ namespace Algorithm {
                        while(!operator_stack.empty()
                        &&operator_stack.peek().precedence <= (*it).precedence )
                        {
-                           output.push(operator_stack.peek());
-                           operator_stack.pop();
+                           if(operator_stack.peek().precedence > 0) {
+                               output.push(operator_stack.peek());
+                               operator_stack.pop();
+                           }
+                           else {break;}
                        }
                        operator_stack.push(*it);
                        break;
@@ -29,21 +32,21 @@ namespace Algorithm {
                        operator_stack.push(*it); break;}
 
                    case Parser::Token::Token_Type::RightParen: {
-                       while(!operator_stack.empty()
-                             &&operator_stack.peek().type != Parser::Token::Token_Type::LeftParen)
+                       bool flag = false;
+                       while(!operator_stack.empty()&&!flag)
                        {
-                           output.push(operator_stack.peek());
+                               if(operator_stack.peek().type == Parser::Token::Token_Type::LeftParen) {
+                                   flag = true;
+                               }
+                               else{ output.push(operator_stack.peek());}
                            operator_stack.pop();
                        }
-                       if(operator_stack.empty()) {
+                       if(operator_stack.empty()&&!flag) {
                            throw std::runtime_error("Parenthesis mismatch!");
-                       }
-                       else {
-                           operator_stack.pop();
                        }
                        break;
                    }
-                   default: {throw std::runtime_error("Wrong symbol  "+(*it).str+" in the expr!");}
+                   default: {throw std::runtime_error("Wrong symbol "+(*it).str+" in the expr!");}
                }
             }
             while(!operator_stack.empty()) {
