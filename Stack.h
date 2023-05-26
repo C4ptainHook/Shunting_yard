@@ -46,6 +46,9 @@ stack<T>::stack() {
 }
 template<class T>
 T& stack<T>::peek() {
+    if (top == nullptr) {
+        throw std::range_error("Attempt to peek empty stack!");
+    }
     return top->data;
 }
 

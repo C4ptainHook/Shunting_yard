@@ -6,22 +6,24 @@ namespace Algorithm {
     queue<Parser::Token> Shunting_yard(queue<Parser::Token>& parsed_q) {
         queue<Parser::Token> output;
         stack<Parser::Token> operator_stack;
-            for(auto token : parsed_q) {
-               switch(token.type){
+        queue<Parser::Token>::iterator it;
+            for(it = parsed_q.begin(); it!=parsed_q.end(); ++it ) {
+               switch((*it).type){
                    case Parser::Token::Token_Type::Number: {
-                       output.push(token); break;}
+                       output.push(*it);
+                       break;}
                    case Parser::Token::Token_Type::Operator: {
                        while(!operator_stack.empty()
-                       &&operator_stack.peek().precedence <= token.precedence )
+                       &&operator_stack.peek().precedence <= (*it).precedence )
                        {
                            output.push(operator_stack.peek());
                            operator_stack.pop();
                        }
-                       operator_stack.push(token);
+                       operator_stack.push(*it);
                        break;
                    }
                    case Parser::Token::Token_Type::LeftParen: {
-                       operator_stack.push(token); break;}
+                       operator_stack.push(*it); break;}
                    case Parser::Token::Token_Type::RightParen: {
                        while(!operator_stack.empty()
                              &&operator_stack.peek().type != Parser::Token::Token_Type::LeftParen)
@@ -37,7 +39,7 @@ namespace Algorithm {
                        }
                        break;
                    }
-                   default: throw std::runtime_error("Wrong symbol  "+token.str+" in the expr!");
+                   default: {throw std::runtime_error("Wrong symbol  "+(*it).str+" in the expr!");}
                }
             }
             while(!operator_stack.empty()) {
