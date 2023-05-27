@@ -38,6 +38,7 @@ namespace Evaluator {
                             temp_stack.pop();
                             temp_stack.push(-1*to_negative);
                             postfix_q.pop();
+                            break;
                         }
                         case '*' :{
                             int right = temp_stack.peek();
