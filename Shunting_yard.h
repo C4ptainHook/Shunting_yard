@@ -16,7 +16,7 @@ namespace Algorithm {
 
                    case Parser::Token::Token_Type::Operator: {
                        while(!operator_stack.empty()
-                       &&operator_stack.peek().precedence <= (*it).precedence )
+                       &&operator_stack.peek().precedence >= (*it).precedence )
                        {
                            if(operator_stack.peek().precedence > 0) {
                                output.push(operator_stack.peek());
