@@ -10,6 +10,7 @@ namespace Evaluator {
             switch (postfix_q.front().type) {
                 case Parser::Token::Token_Type::Number: {
                     temp_stack.push(std::stoi(postfix_q.front().str));
+                    postfix_q.pop();
                     break;
                 }
                 case Parser::Token::Token_Type::Operator: {
@@ -20,6 +21,7 @@ namespace Evaluator {
                             int left = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(left+right);
+                            postfix_q.pop();
                             break;
                         }
                         case '-' :{
@@ -28,12 +30,14 @@ namespace Evaluator {
                             int left = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(left-right);
+                            postfix_q.pop();
                             break;
                         }
                         case 'm' : {
                             int to_negative = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(-1*to_negative);
+                            postfix_q.pop();
                         }
                         case '*' :{
                             int right = temp_stack.peek();
@@ -41,6 +45,7 @@ namespace Evaluator {
                             int left = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(left*right);
+                            postfix_q.pop();
                             break;
                         }
                         case '/' :{
@@ -49,6 +54,7 @@ namespace Evaluator {
                             int left = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(left/right);
+                            postfix_q.pop();
                             break;
                         }
                         case '^' :{
@@ -57,13 +63,13 @@ namespace Evaluator {
                             int left = temp_stack.peek();
                             temp_stack.pop();
                             temp_stack.push(static_cast<int>(pow(left, right)));
+                            postfix_q.pop();
                             break;
                         }
                     }
                 }
                 default: break;
             }
-            postfix_q.pop();
         }
         return temp_stack.peek();
     }

@@ -34,6 +34,7 @@ public:
     void pop();
     void clear();
     bool empty();
+    const unsigned int get_size() const;
     const T& peek();
     stack<T>::iterator begin();
     stack<T>::iterator end();
@@ -50,6 +51,11 @@ const T& stack<T>::peek() {
         throw std::range_error("Attempt to peek empty stack!");
     }
     return top->data;
+}
+
+template<class T>
+const unsigned int stack<T>::get_size() const{
+    return size;
 }
 
 template<class T>
